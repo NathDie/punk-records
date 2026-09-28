@@ -36,8 +36,9 @@ security:
 
     # Note: Only the *first* matching rule is applied
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { host: '^%admin_domain%', path: '^/login', roles: [ ] }
+        - { host: '^%admin_domain%', path: '^/logout', roles: [ ROLE_ADMIN, ROLE_API ] }
+        - { host: '^%admin_domain%', roles: [ ROLE_ADMIN ] }
 
 when@test:
     security:
