@@ -3,7 +3,11 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Enum\Priority;
 use App\Enum\Status;
 use App\Repository\TaskRepository;
@@ -18,12 +22,16 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
 #[ApiResource(
     operations: [
         new GetCollection(
-            uriTemplate: '/tasks/tody',
+            uriTemplate: '/tasks/today',
             normalizationContext: [
                 'groups' => ['task:detail'],
             ],
             provider: TaskTokayCollectionProvider::class,
         ),
+        new Post(),
+        new Get(),
+        new Patch(),
+        new Delete(),
     ]
 )]
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
