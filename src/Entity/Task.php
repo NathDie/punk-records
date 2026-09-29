@@ -2,14 +2,30 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Enum\Priority;
 use App\Enum\Status;
 use App\Repository\TaskRepository;
+use App\State\Provider\TaskTokayCollectionProvider;
 use App\Trait\TimestampTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            uriTemplate: '/tasks/tody',
+            normalizationContext: [
+                'groups' => ['task:detail'],
+            ],
+            provider: TaskTokayCollectionProvider::class,
+        ),
+    ]
+)]
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Task
@@ -18,24 +34,33 @@ class Task
 
     #[ORM\Id]
     #[ORM\Column(type: 'uuid')]
+    #[Groups(['task:detail'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['task:detail'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['task:detail'])]
     private ?string $description = null;
 
     #[ORM\Column(enumType: Status::class)]
+    #[Groups(['task:detail'])]
     private ?Status $status = null;
 
     #[ORM\Column(enumType: Priority::class)]
+    #[Groups(['task:detail'])]
     private ?Priority $priority = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
+    #[Groups(['task:detail'])]
+    #[SerializedName('due_date')]
     private ?\DateTimeImmutable $dueDate = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['task:detail'])]
+    #[SerializedName('complete_at')]
     private ?\DateTimeImmutable $completeAt = null;
 
     public function __construct()
