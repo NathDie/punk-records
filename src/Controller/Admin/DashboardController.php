@@ -33,6 +33,8 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('menu.nav.dashboard', 'fa fa-home');
         yield MenuItem::linkTo(TaskCrudController::class, 'menu.nav.task', 'fas fa-list-check');
+        yield MenuItem::linkTo(ReminderCrudController::class, 'menu.nav.reminder', 'fas fa-bell');
+        yield MenuItem::linkTo(MaintenanceCrudController::class, 'menu.nav.maintenance', 'fas fa-screwdriver-wrench');
 
         yield MenuItem::section('menu.section.inventory');
         yield MenuItem::linkTo(InventoryCrudController::class, 'menu.nav.inventory', 'fas fa-boxes-stacked');

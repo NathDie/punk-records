@@ -7,6 +7,8 @@ menu:
         inventory_category: "Catégories"
         inventory: "Objets"
         location: "Emplacements"
+        maintenance: "Maintenances"
+        reminder: "Rappels"
 
 crud:
     tab:
@@ -58,8 +60,8 @@ inventory:
     controller:
         index: "Liste des objets"
         new: "Nouvel objet"
-        edit: "Modifier l'objet'"
-        detail: "Détail de l'objet'"
+        edit: "Modifier l'objet"
+        detail: "Détail de l'objet"
     label:
         singular: "un objet"
         plural: "des objets"
@@ -72,3 +74,38 @@ inventory:
         warranty_expires_at: "Date de fin de garantie"
         equipment_status: "Status"
         used_by: "Utilisé par"
+
+reminder:
+    controller:
+        index: "Liste des rappels"
+        new: "Nouveau rappel"
+        edit: "Modifier le rappel"
+        detail: "Détail du rappel"
+    label:
+        singular: "un rappel"
+        plural: "des rappels"
+    form:
+        title: "Titre"
+        description: "Description"
+        remind_at: "Date du rappel"
+        recurring: "Récurrence"
+        snoozed_until: "Reporté jusqu'au"
+        status: "Status"
+        created_at: "Créé le"
+
+maintenance:
+    controller:
+        index: "Liste des maintenances"
+        new: "Nouvelle maintenance"
+        edit: "Modifier la maintenance"
+        detail: "Détail de la maintenance"
+    label:
+        singular: "une maintenance"
+        plural: "des maintenances"
+    form:
+        title: "Titre"
+        description: "Description"
+        frequency: "Fréquence"
+        last_done_at: "Dernière réalisation le"
+        next_due_at: "Prochaine échéance le"
+        status: "Status"

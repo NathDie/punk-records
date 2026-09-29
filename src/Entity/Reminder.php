@@ -36,10 +36,11 @@ class Reminder
     private ?Status $status = null;
 
     #[ORM\Column]
-    private ?DateTimeImmutable $createdAt = null;
+    private ?DateTimeImmutable $createdAt;
 
     public function __construct()
     {
+        $this->createdAt = new DateTimeImmutable();
         $this->id = Uuid::v7();
     }
 

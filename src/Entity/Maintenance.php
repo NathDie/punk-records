@@ -27,7 +27,7 @@ class Maintenance
     private ?string $description = null;
 
     #[ORM\Column(enumType: RecurrenceRule::class)]
-    private ?RecurrenceRule $Frequency = null;
+    private ?RecurrenceRule $frequency = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $lastDoneAt = null;
@@ -74,12 +74,12 @@ class Maintenance
 
     public function getFrequency(): ?RecurrenceRule
     {
-        return $this->Frequency;
+        return $this->frequency;
     }
 
-    public function setFrequency(RecurrenceRule $Frequency): static
+    public function setFrequency(RecurrenceRule $frequency): static
     {
-        $this->Frequency = $Frequency;
+        $this->frequency = $frequency;
 
         return $this;
     }
