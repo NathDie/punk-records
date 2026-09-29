@@ -1,0 +1,25 @@
+menu:
+    nav:
+        dashboard: "Tableau de bord"
+        task: "Tâches"
+
+crud:
+    tab:
+        general: "Informations générales"
+
+task:
+    controller:
+        index: "Liste des tâches"
+        new: "Nouvelle tâche"
+        edit: "Modifier la tâche"
+        detail: "Détail de la tâche"
+    label:
+        singular: "une tâche"
+        plural: "des tâches"
+    form:
+        title: "Titre"
+        description: "Description"
+        status: "Status"
+        priority: "Priorité"
+        due_date: "Date d'échéance"
+        complete_at: "Terminé le"
