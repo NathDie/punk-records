@@ -1,7 +1,12 @@
 menu:
+    section:
+        inventory: "Inventaire"
     nav:
         dashboard: "Tableau de bord"
         task: "Tâches"
+        inventory_category: "Catégories"
+        inventory: "Objets"
+        location: "Emplacements"
 
 crud:
     tab:
@@ -23,3 +28,47 @@ task:
         priority: "Priorité"
         due_date: "Date d'échéance"
         complete_at: "Terminé le"
+
+location:
+    controller:
+        index: "Liste des emplacements"
+        new: "Nouvel emplacement"
+        edit: "Modifier l'emplacement"
+        detail: "Détail de l'emplacement"
+    label:
+        singular: "un emplacement"
+        plural: "des emplacements"
+    form:
+        name: "Nom"
+        description: "Description"
+
+inventory_category:
+    controller:
+        index: "Liste des catégories"
+        new: "Nouvelle catégorie"
+        edit: "Modifier la catégorie"
+        detail: "Détail de la catégorie"
+    label:
+        singular: "une catégorie"
+        plural: "des catégories"
+    form:
+        name: "Nom"
+
+inventory:
+    controller:
+        index: "Liste des objets"
+        new: "Nouvel objet"
+        edit: "Modifier l'objet'"
+        detail: "Détail de l'objet'"
+    label:
+        singular: "un objet"
+        plural: "des objets"
+    form:
+        name: "Nom"
+        description: "Description"
+        quantity: "Quantité"
+        purchase_date: "Date d'achat"
+        purchase_price: "Prix d'achat"
+        warranty_expires_at: "Date de fin de garantie"
+        equipment_status: "Status"
+        used_by: "Utilisé par"
