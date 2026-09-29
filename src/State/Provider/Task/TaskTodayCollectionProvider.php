@@ -1,6 +1,6 @@
 <?php
 
-namespace App\State\Provider;
+namespace App\State\Provider\Task;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
@@ -10,7 +10,7 @@ use App\Repository\TaskRepository;
 /**
  * @implements ProviderInterface<Task>
  */
-final readonly class TaskTokayCollectionProvider implements ProviderInterface
+final readonly class TaskTodayCollectionProvider implements ProviderInterface
 {
     public function __construct(
         private TaskRepository $repository,

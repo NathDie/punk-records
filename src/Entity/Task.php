@@ -11,13 +11,13 @@ use ApiPlatform\Metadata\Post;
 use App\Enum\Priority;
 use App\Enum\Status;
 use App\Repository\TaskRepository;
-use App\State\Provider\TaskTokayCollectionProvider;
+use App\State\Provider\Task\TaskTodayCollectionProvider;
 use App\Trait\TimestampTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
+use Symfony\Component\Uid\Uuid;
 
 #[ApiResource(
     operations: [
@@ -26,7 +26,7 @@ use Symfony\Component\Serializer\Attribute\SerializedName;
             normalizationContext: [
                 'groups' => ['task:detail'],
             ],
-            provider: TaskTokayCollectionProvider::class,
+            provider: TaskTodayCollectionProvider::class,
         ),
         new Post(),
         new Get(),
