@@ -16,6 +16,45 @@ class ReminderRepository extends ServiceEntityRepository
         parent::__construct($registry, Reminder::class);
     }
 
+    public function findToday(): array
+    {
+        $start = new \DateTimeImmutable('today');
+        $end = $start->modify('+1 day');
+
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.remindAt >= :start')
+            ->andWhere('r.remindAt < :end')
+            ->setParameter('start', $start)
+            ->setParameter('end', $end)
+            ->orderBy('r.remindAt', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findUpcoming(): array
+    {
+        $tomorrow = new \DateTimeImmutable('tomorrow');
+
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.remindAt >= :tomorrow')
+            ->setParameter('tomorrow', $tomorrow)
+            ->orderBy('r.remindAt', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findOverdue(): array
+    {
+        $today = new \DateTimeImmutable('today');
+
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.remindAt < :today')
+            ->setParameter('today', $today)
+            ->orderBy('r.remindAt', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Reminder[] Returns an array of Reminder objects
 //     */

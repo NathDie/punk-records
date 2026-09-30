@@ -2,37 +2,78 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Enum\RecurrenceRule;
 use App\Enum\Status;
 use App\Repository\ReminderRepository;
+use App\State\Provider\Reminder\ReminderOverdueCollectionProvider;
+use App\State\Provider\Reminder\ReminderTodayCollectionProvider;
+use App\State\Provider\Reminder\ReminderUpcomingCollectionProvider;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            uriTemplate: '/reminders/today',
+            normalizationContext: [
+                'groups' => ['reminder:detail'],
+            ],
+            provider: ReminderTodayCollectionProvider::class,
+        ),
+        new GetCollection(
+            uriTemplate: '/reminders/upcoming',
+            normalizationContext: [
+                'groups' => ['reminder:detail'],
+            ],
+            provider: ReminderUpcomingCollectionProvider::class,
+        ),
+        new GetCollection(
+            uriTemplate: '/reminders/overdue',
+            normalizationContext: [
+                'groups' => ['reminder:detail'],
+            ],
+            provider: ReminderOverdueCollectionProvider::class,
+        ),
+    ]
+)]
 #[ORM\Entity(repositoryClass: ReminderRepository::class)]
 class Reminder
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid')]
+    #[Groups(['reminder:detail'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['reminder:detail'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['reminder:detail'])]
     private ?string $description = null;
 
     #[ORM\Column]
+    #[Groups(['reminder:detail'])]
+    #[SerializedName('remind_at')]
     private ?DateTimeImmutable $remindAt = null;
 
     #[ORM\Column(enumType: RecurrenceRule::class)]
+    #[Groups(['reminder:detail'])]
     private ?RecurrenceRule $recurring = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['reminder:detail'])]
+    #[SerializedName('snoozed_until')]
     private ?DateTimeImmutable $snoozedUntil = null;
 
     #[ORM\Column(enumType: Status::class)]
+    #[Groups(['reminder:detail'])]
     private ?Status $status = null;
 
     #[ORM\Column]
