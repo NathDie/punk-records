@@ -16,6 +16,13 @@ security:
             # Ensure dev tools and static assets are always allowed
             pattern: ^/(_profiler|_wdt|assets|build)/
             security: false
+
+        api:
+            host: '^%api_domain%'
+            stateless: true
+            access_token:
+                token_handler: App\Security\BotTokenHandler
+
         main:
             lazy: true
             provider: app_user_provider
@@ -36,6 +43,8 @@ security:
 
     # Note: Only the *first* matching rule is applied
     access_control:
+        - { host: '^%api_domain%', methods: [POST, PUT, PATCH, DELETE], roles: [ ROLE_BOT ] }
+
         - { host: '^%admin_domain%', path: '^/login', roles: [ ] }
         - { host: '^%admin_domain%', path: '^/logout', roles: [ ROLE_ADMIN, ROLE_API ] }
         - { host: '^%admin_domain%', roles: [ ROLE_ADMIN ] }
