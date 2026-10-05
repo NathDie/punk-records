@@ -9,6 +9,7 @@ menu:
         location: "Emplacements"
         maintenance: "Maintenances"
         reminder: "Rappels"
+        monitoring: "Supervisions"
 
 crud:
     tab:
@@ -109,3 +110,17 @@ maintenance:
         last_done_at: "Dernière réalisation le"
         next_due_at: "Prochaine échéance le"
         status: "Status"
+
+monitoring:
+    controller:
+        index: "Liste des sites internet"
+        new: "Nouveau site internet"
+        edit: "Modifier le site internet"
+        detail: "Détail du site internet"
+    label:
+        singular: "un site internet"
+        plural: "des sites internet"
+    form:
+        name: "Nom"
+        link: "Lien"
+        active: "Activation"
