@@ -49,11 +49,7 @@ class ReminderCrudController extends AbstractCrudController
             TextareaField::new('description', 'reminder.form.description')
                 ->hideOnIndex()
                 ->setNumOfRows(4),
-            DateTimeField::new('remindAt', 'reminder.form.remind_at'),
-            ChoiceField::new('status', 'reminder.form.status')
-                ->setChoices(Status::cases())
-                ->renderAsBadges(),
-            DateField::new('snoozedUntil', 'reminder.form.snoozed_until'),
+            DateField::new('remindAt', 'reminder.form.remind_at'),
             ChoiceField::new('recurring', 'reminder.form.recurring')
                 ->setChoices(RecurrenceRule::cases())
                 ->renderAsBadges(),

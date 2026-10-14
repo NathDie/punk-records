@@ -3,10 +3,12 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Enum\RecurrenceRule;
-use App\Enum\Status;
 use App\Repository\ReminderRepository;
+use App\State\Processor\Reminder\ReminderNextRecurrenceProcessor;
 use App\State\Provider\Reminder\ReminderOverdueCollectionProvider;
 use App\State\Provider\Reminder\ReminderTodayCollectionProvider;
 use App\State\Provider\Reminder\ReminderUpcomingCollectionProvider;
@@ -19,6 +21,9 @@ use Symfony\Component\Uid\Uuid;
 
 #[ApiResource(
     operations: [
+        new Get(
+            requirements: ['id' => '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'],
+        ),
         new GetCollection(
             uriTemplate: '/reminders/today',
             normalizationContext: [
@@ -39,6 +44,13 @@ use Symfony\Component\Uid\Uuid;
                 'groups' => ['reminder:detail'],
             ],
             provider: ReminderOverdueCollectionProvider::class,
+        ),
+        new Post(
+            uriTemplate: '/reminders/process',
+            status: 204,
+            output: false,
+            deserialize: false,
+            processor: ReminderNextRecurrenceProcessor::class,
         ),
     ]
 )]
@@ -66,15 +78,6 @@ class Reminder
     #[ORM\Column(enumType: RecurrenceRule::class)]
     #[Groups(['reminder:detail'])]
     private ?RecurrenceRule $recurring = null;
-
-    #[ORM\Column(nullable: true)]
-    #[Groups(['reminder:detail'])]
-    #[SerializedName('snoozed_until')]
-    private ?DateTimeImmutable $snoozedUntil = null;
-
-    #[ORM\Column(enumType: Status::class)]
-    #[Groups(['reminder:detail'])]
-    private ?Status $status = null;
 
     #[ORM\Column]
     private ?DateTimeImmutable $createdAt;
@@ -134,30 +137,6 @@ class Reminder
     public function setRecurring(RecurrenceRule $recurring): static
     {
         $this->recurring = $recurring;
-
-        return $this;
-    }
-
-    public function getSnoozedUntil(): ?DateTimeImmutable
-    {
-        return $this->snoozedUntil;
-    }
-
-    public function setSnoozedUntil(?DateTimeImmutable $snoozedUntil): static
-    {
-        $this->snoozedUntil = $snoozedUntil;
-
-        return $this;
-    }
-
-    public function getStatus(): ?Status
-    {
-        return $this->status;
-    }
-
-    public function setStatus(Status $status): static
-    {
-        $this->status = $status;
 
         return $this;
     }
