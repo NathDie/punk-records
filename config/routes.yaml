@@ -4,3 +4,8 @@ admin:
         namespace: App\Controller\Admin
     type: attribute
     host: '%admin_domain%'
+
+api_auth:
+    path: /auth
+    host: '%api_domain%'
+    methods: [POST]
