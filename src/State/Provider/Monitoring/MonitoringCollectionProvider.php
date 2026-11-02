@@ -19,6 +19,6 @@ final readonly class MonitoringCollectionProvider implements ProviderInterface
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): array
     {
-        return $this->repository->findBy(['active' => true,]);
+        return $this->repository->findAll();
     }
 }

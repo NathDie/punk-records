@@ -20,7 +20,7 @@ use Symfony\Component\Uid\Uuid;
         new GetCollection(
             uriTemplate: '/monitorings',
             normalizationContext: [
-                'groups' => ['monitoring:detail'],
+                'groups' => ['monitoring:detail', 'activation'],
             ],
             provider: MonitoringCollectionProvider::class,
         ),
