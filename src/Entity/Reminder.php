@@ -3,12 +3,15 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Enum\RecurrenceRule;
 use App\Repository\ReminderRepository;
 use App\State\Processor\Reminder\ReminderNextRecurrenceProcessor;
+use App\State\Provider\Reminder\ReminderCollectionProvider;
 use App\State\Provider\Reminder\ReminderOverdueCollectionProvider;
 use App\State\Provider\Reminder\ReminderTodayCollectionProvider;
 use App\State\Provider\Reminder\ReminderUpcomingCollectionProvider;
@@ -23,6 +26,13 @@ use Symfony\Component\Uid\Uuid;
     operations: [
         new Get(
             requirements: ['id' => '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'],
+        ),
+        new GetCollection(
+            uriTemplate: '/reminders',
+            normalizationContext: [
+                'groups' => ['reminder:detail'],
+            ],
+            provider: ReminderCollectionProvider::class,
         ),
         new GetCollection(
             uriTemplate: '/reminders/today',
@@ -52,6 +62,9 @@ use Symfony\Component\Uid\Uuid;
             deserialize: false,
             processor: ReminderNextRecurrenceProcessor::class,
         ),
+        new Post(),
+        new Patch(),
+        new Delete(),
     ]
 )]
 #[ORM\Entity(repositoryClass: ReminderRepository::class)]
