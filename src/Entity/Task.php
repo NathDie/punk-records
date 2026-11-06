@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\Post;
 use App\Enum\Priority;
 use App\Enum\Status;
 use App\Repository\TaskRepository;
+use App\State\Provider\Task\TaskCollectionProvider;
 use App\State\Provider\Task\TaskTodayCollectionProvider;
 use App\Trait\TimestampTrait;
 use Doctrine\DBAL\Types\Types;
@@ -27,6 +28,13 @@ use Symfony\Component\Uid\Uuid;
                 'groups' => ['task:detail'],
             ],
             provider: TaskTodayCollectionProvider::class,
+        ),
+        new GetCollection(
+            uriTemplate: '/tasks',
+            normalizationContext: [
+                'groups' => ['task:detail'],
+            ],
+            provider: TaskCollectionProvider::class,
         ),
         new Post(),
         new Get(),

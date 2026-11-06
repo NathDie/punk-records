@@ -16,6 +16,20 @@ class TaskRepository extends ServiceEntityRepository
         parent::__construct($registry, Task::class);
     }
 
+    /**
+     * @return Task[]
+     */
+    public function findUpcoming(): array
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->andWhere('t.dueDate >= :today')
+            ->andWhere('t.completeAt IS NULL')
+            ->setParameter('today', new \DateTimeImmutable('today'))
+            ->orderBy('t.dueDate', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return Task[] Returns an array of Task objects
 //     */

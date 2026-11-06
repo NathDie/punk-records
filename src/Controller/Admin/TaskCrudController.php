@@ -54,7 +54,7 @@ class TaskCrudController extends AbstractCrudController
                 ->renderAsBadges(),
             ChoiceField::new('priority', 'task.form.priority')
                 ->setChoices(Priority::cases()),
-            DateTimeField::new('dueDate', 'task.form.due_date'),
+            DateField::new('dueDate', 'task.form.due_date'),
             DateField::new('completeAt', 'task.form.complete_at')
         ];
     }
