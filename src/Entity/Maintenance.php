@@ -2,12 +2,17 @@
 
 namespace App\Entity;
 
+use App\Enum\MaintenanceStatus;
 use App\Enum\RecurrenceRule;
-use App\Enum\Status;
 use App\Repository\MaintenanceRepository;
 use App\Trait\TimestampTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\Ignore;
+use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: MaintenanceRepository::class)]
@@ -16,31 +21,48 @@ class Maintenance
 {
     use TimestampTrait;
 
+    public const TODO_WINDOW_DAYS = 7;
+
     #[ORM\Id]
     #[ORM\Column(type: 'uuid')]
+    #[Groups(['maintenance:detail'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['maintenance:detail'])]
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['maintenance:detail'])]
     private ?string $description = null;
 
     #[ORM\Column(enumType: RecurrenceRule::class)]
+    #[Groups(['maintenance:detail'])]
     private ?RecurrenceRule $frequency = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
+    #[Groups(['maintenance:detail'])]
+    #[SerializedName('last_done_at')]
     private ?\DateTimeImmutable $lastDoneAt = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
+    #[Groups(['maintenance:detail'])]
+    #[SerializedName('next_due_at')]
     private ?\DateTimeImmutable $nextDueAt = null;
 
-    #[ORM\Column(enumType: Status::class)]
-    private ?Status $status = null;
+    /**
+     * @var Collection<int, MaintenanceLog>
+     */
+    #[ORM\OneToMany(targetEntity: MaintenanceLog::class, mappedBy: 'maintenance')]
+    #[Groups(['maintenance:detail'])]
+    private Collection $logs;
+
+    private MaintenanceStatus $status;
 
     public function __construct()
     {
         $this->id = Uuid::v7();
+        $this->logs = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -108,15 +130,60 @@ class Maintenance
         return $this;
     }
 
-    public function getStatus(): ?Status
+    /**
+     * @return Collection<int, MaintenanceLog>
+     */
+    public function getLogs(): Collection
     {
-        return $this->status;
+        return $this->logs;
     }
 
-    public function setStatus(Status $status): static
+    public function addLog(MaintenanceLog $log): static
     {
-        $this->status = $status;
+        if (!$this->logs->contains($log)) {
+            $this->logs->add($log);
+            $log->setMaintenance($this);
+        }
 
         return $this;
+    }
+
+    public function removeLog(MaintenanceLog $log): static
+    {
+        if ($this->logs->removeElement($log)) {
+            // set the owning side to null (unless already changed)
+            if ($log->getMaintenance() === $this) {
+                $log->setMaintenance(null);
+            }
+        }
+
+        return $this;
+    }
+
+    #[Groups(['maintenance:detail'])]
+    #[SerializedName('status')]
+    public function getStatus(): MaintenanceStatus
+    {
+        if ($this->nextDueAt === null) {
+            return MaintenanceStatus::UP_TO_DATE;
+        }
+
+        $today = new \DateTimeImmutable('today');
+
+        if ($this->nextDueAt < $today) {
+            return MaintenanceStatus::OVERDUE;
+        }
+
+        if ($this->nextDueAt <= $today->modify('+' . self::TODO_WINDOW_DAYS . ' days')) {
+            return MaintenanceStatus::TODO;
+        }
+
+        return MaintenanceStatus::UP_TO_DATE;
+    }
+
+    #[Ignore]
+    public function getDueStateLabel(): string
+    {
+        return $this->getStatus()->label();
     }
 }

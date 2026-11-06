@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Maintenance;
+use App\Enum\MaintenanceStatus;
 use App\Enum\RecurrenceRule;
 use App\Enum\Status;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -50,9 +51,9 @@ class MaintenanceCrudController extends AbstractCrudController
                 ->setNumOfRows(4),
             DateField::new('lastDoneAt', 'maintenance.form.last_done_at'),
             DateField::new('nextDueAt', 'maintenance.form.next_due_at'),
-            ChoiceField::new('status', 'maintenance.form.status')
-                ->setChoices(Status::cases())
-                ->renderAsBadges(),
+            TextField::new('dueStateLabel', 'maintenance.form.status')
+                ->onlyOnIndex()
+                ->setSortable(false),
             ChoiceField::new('frequency', 'maintenance.form.frequency')
                 ->setChoices(RecurrenceRule::cases())
                 ->renderAsBadges(),
