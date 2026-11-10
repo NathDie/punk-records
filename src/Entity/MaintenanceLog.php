@@ -2,6 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Repository\MaintenanceLogRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,6 +15,19 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Uid\Uuid;
 
+#[ApiResource(
+    operations: [
+        new Post(
+            uriTemplate: '/maintenance-logs'
+        ),
+        new Patch(
+            uriTemplate: '/maintenance-logs/{id}'
+        ),
+        new Delete(
+            uriTemplate: '/maintenance-logs/{id}'
+        ),
+    ]
+)]
 #[ORM\Entity(repositoryClass: MaintenanceLogRepository::class)]
 class MaintenanceLog
 {

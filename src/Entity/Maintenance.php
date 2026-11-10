@@ -2,9 +2,16 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Enum\MaintenanceStatus;
 use App\Enum\RecurrenceRule;
 use App\Repository\MaintenanceRepository;
+use App\State\Provider\Monitoring\MonitoringCollectionProvider;
 use App\Trait\TimestampTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,6 +22,20 @@ use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Uid\Uuid;
 
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            uriTemplate: '/maintenances',
+            normalizationContext: [
+                'groups' => ['maintenance:detail', 'maintenance_log:detail'],
+            ],
+        ),
+        new Post(),
+        new Get(),
+        new Patch(),
+        new Delete(),
+    ]
+)]
 #[ORM\Entity(repositoryClass: MaintenanceRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class Maintenance
@@ -53,7 +74,7 @@ class Maintenance
     /**
      * @var Collection<int, MaintenanceLog>
      */
-    #[ORM\OneToMany(targetEntity: MaintenanceLog::class, mappedBy: 'maintenance')]
+    #[ORM\OneToMany(targetEntity: MaintenanceLog::class, mappedBy: 'maintenance', cascade: ['persist', 'remove'])]
     #[Groups(['maintenance:detail'])]
     private Collection $logs;
 

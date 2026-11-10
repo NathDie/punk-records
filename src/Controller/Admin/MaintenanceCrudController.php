@@ -3,12 +3,11 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Maintenance;
-use App\Enum\MaintenanceStatus;
 use App\Enum\RecurrenceRule;
-use App\Enum\Status;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -57,6 +56,12 @@ class MaintenanceCrudController extends AbstractCrudController
             ChoiceField::new('frequency', 'maintenance.form.frequency')
                 ->setChoices(RecurrenceRule::cases())
                 ->renderAsBadges(),
+            FormField::addTab('crud.tab.log')
+                ->collapsible(),
+            CollectionField::new('logs')
+                ->useEntryCrudForm(MaintenanceLogCrudController::class)
+                ->setEntryIsComplex()
+                ->onlyOnForms(),
         ];
     }
 }
