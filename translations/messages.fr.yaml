@@ -1,6 +1,7 @@
 menu:
     section:
         inventory: "Inventaire"
+        library: "Bibliothèque"
     nav:
         dashboard: "Tableau de bord"
         task: "Tâches"
@@ -10,6 +11,9 @@ menu:
         maintenance: "Maintenances"
         reminder: "Rappels"
         monitoring: "Supervisions"
+        book: "Livres"
+        book_author: "Auteurs"
+        book_category: "Catégories"
 
 crud:
     tab:
@@ -130,3 +134,44 @@ maintenance_log:
     form:
         done_at: "Date"
         note: "Note"
+
+book:
+    controller:
+        index: "Liste des livres"
+        new: "Nouveau livre"
+        edit: "Modifier le livre"
+        detail: "Détail du livre"
+    label:
+        singular: "un livre"
+        plural: "des livres"
+    form:
+        title: "Titre"
+        synopsis: "Résumé"
+        published_at: "Date de publication"
+        author: "Auteur"
+        categories: "Catégorie(s)"
+        reading: "Déjà lu ?"
+
+book_category:
+    controller:
+        index: "Liste des catégories de livre"
+        new: "Nouvelle catégorie de livre"
+        edit: "Modifier la catégorie de livre"
+        detail: "Détail de la catégorie de livre"
+    label:
+        singular: "une catégorie de livre"
+        plural: "des catégories de livres"
+    form:
+        name: "Nom"
+
+book_author:
+    controller:
+        index: "Liste des auteurs de livre"
+        new: "Nouvel auteur de livre"
+        edit: "Modifier l'auteur de livre"
+        detail: "Détail de l'auteur de livre"
+    label:
+        singular: "un auteur de livre"
+        plural: "des auteurs de livres"
+    form:
+        name: "Nom"

@@ -36,10 +36,16 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkTo(ReminderCrudController::class, 'menu.nav.reminder', 'fas fa-bell');
         yield MenuItem::linkTo(MaintenanceCrudController::class, 'menu.nav.maintenance', 'fas fa-screwdriver-wrench');
         yield MenuItem::linkTo(MonitoringCrudController::class, 'menu.nav.monitoring', 'fas fa-heart-pulse');
+
         yield MenuItem::section('menu.section.inventory');
         yield MenuItem::linkTo(InventoryCrudController::class, 'menu.nav.inventory', 'fas fa-boxes-stacked');
         yield MenuItem::linkTo(InventoryCategoryCrudController::class, 'menu.nav.inventory_category', 'fas fa-tags');
         yield MenuItem::linkTo(LocationCrudController::class, 'menu.nav.location', 'fas fa-location-dot');
+
+        yield MenuItem::section('menu.section.library');
+        yield MenuItem::linkTo(BookCrudController::class, 'menu.nav.book', 'fas fa-book-open');
+        yield MenuItem::linkTo(AuthorCrudController::class, 'menu.nav.book_author', 'fas fa-pen-nib');
+        yield MenuItem::linkTo(BookCategoryCrudController::class, 'menu.nav.book_category', 'fas fa-tags');
 
         // yield MenuItem::linkTo(SomeCrudController::class, 'The Label', 'fas fa-list');
     }
