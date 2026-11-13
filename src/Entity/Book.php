@@ -2,6 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Repository\BookRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,6 +17,31 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Uid\Uuid;
 
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            uriTemplate: '/books',
+            normalizationContext: [
+                'groups' => ['book:detail', 'book_category:detail', 'book_author:detail'],
+            ],
+        ),
+        new Get(
+            uriTemplate: '/books/{id}',
+            normalizationContext: [
+                'groups' => ['book:detail', 'book_category:detail', 'book_author:detail'],
+            ],
+        ),
+        new Post(
+            uriTemplate: '/books',
+        ),
+        new Patch(
+            uriTemplate: '/books/{id}'
+        ),
+        new Delete(
+            uriTemplate: '/books/{id}'
+        ),
+    ]
+)]
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 class Book
 {

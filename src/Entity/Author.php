@@ -2,6 +2,11 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
 use App\Repository\AuthorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +14,28 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
+#[ApiResource(
+    operations: [
+        new GetCollection(
+            uriTemplate: '/book-authors',
+            normalizationContext: [
+                'groups' => ['book_author:detail'],
+            ],
+        ),
+        new Get(
+            uriTemplate: '/book-authors/{id}',
+            normalizationContext: [
+                'groups' => ['book_author:detail'],
+            ],
+        ),
+        new Post(
+            uriTemplate: '/book-authors',
+        ),
+        new Delete(
+            uriTemplate: '/book-authors/{id}'
+        ),
+    ]
+)]
 #[ORM\Entity(repositoryClass: AuthorRepository::class)]
 class Author
 {
